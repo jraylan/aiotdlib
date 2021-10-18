@@ -314,7 +314,24 @@ class Client:
     __middlewares: list[MiddlewareCallable] = []
     __middlewares_handlers: list[MiddlewareCallable] = []
 
+    __auth_actions = {
+        None: self.__auth_start,
+        API.Types.AUTHORIZATION_STATE_WAIT_TDLIB_PARAMETERS: self.__set_tdlib_parameters,
+        API.Types.AUTHORIZATION_STATE_WAIT_ENCRYPTION_KEY: self.__check_database_encryption_key,
+        API.Types.AUTHORIZATION_STATE_WAIT_PHONE_NUMBER: self.__set_authentication_phone_number_or_check_bot_token,
+        API.Types.AUTHORIZATION_STATE_WAIT_CODE: self.__check_authentication_code,
+        API.Types.AUTHORIZATION_STATE_WAIT_REGISTRATION: self.__register_user,
+        API.Types.AUTHORIZATION_STATE_WAIT_PASSWORD: self.__check_authentication_password,
+        API.Types.AUTHORIZATION_STATE_READY: self.__auth_completed,
+        API.Types.AUTHORIZATION_STATE_LOGGING_OUT: self.__auth_logging_out,
+        API.Types.AUTHORIZATION_STATE_CLOSING: self.__auth_closing,
+        API.Types.AUTHORIZATION_STATE_CLOSED: self.__auth_closed,
+    }
+
     def __init__(self, **kwargs):
+        auth_action = kwargs.pop('auth_action',) or {}
+        self.__auth_actions.update(auth_action)
+
         self.settings = ClientSettings(**kwargs)
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.setLevel(logging.DEBUG if self.settings.debug else logging.INFO)
@@ -769,19 +786,6 @@ class Client:
         else:
             self.logger.info('Authorization process has been started with phone')
 
-        auth_actions = {
-            None: self.__auth_start,
-            API.Types.AUTHORIZATION_STATE_WAIT_TDLIB_PARAMETERS: self.__set_tdlib_parameters,
-            API.Types.AUTHORIZATION_STATE_WAIT_ENCRYPTION_KEY: self.__check_database_encryption_key,
-            API.Types.AUTHORIZATION_STATE_WAIT_PHONE_NUMBER: self.__set_authentication_phone_number_or_check_bot_token,
-            API.Types.AUTHORIZATION_STATE_WAIT_CODE: self.__check_authentication_code,
-            API.Types.AUTHORIZATION_STATE_WAIT_REGISTRATION: self.__register_user,
-            API.Types.AUTHORIZATION_STATE_WAIT_PASSWORD: self.__check_authentication_password,
-            API.Types.AUTHORIZATION_STATE_READY: self.__auth_completed,
-            API.Types.AUTHORIZATION_STATE_LOGGING_OUT: self.__auth_logging_out,
-            API.Types.AUTHORIZATION_STATE_CLOSING: self.__auth_closing,
-            API.Types.AUTHORIZATION_STATE_CLOSED: self.__auth_closed,
-        }
 
         while not self.__is_authorized:
             result = None
@@ -789,7 +793,7 @@ class Client:
             while True:
                 try:
                     self.logger.debug('Current authorization state: %s', self.__current_authorization_state)
-                    next_action = auth_actions.get(self.__current_authorization_state)
+                    next_action = sefl.__auth_actions.get(self.__current_authorization_state)
 
                     if bool(next_action):
                         result = await next_action()
