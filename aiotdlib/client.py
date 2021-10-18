@@ -314,22 +314,24 @@ class Client:
     __middlewares: list[MiddlewareCallable] = []
     __middlewares_handlers: list[MiddlewareCallable] = []
 
-    __auth_actions = {
-        None: self.__auth_start,
-        API.Types.AUTHORIZATION_STATE_WAIT_TDLIB_PARAMETERS: self.__set_tdlib_parameters,
-        API.Types.AUTHORIZATION_STATE_WAIT_ENCRYPTION_KEY: self.__check_database_encryption_key,
-        API.Types.AUTHORIZATION_STATE_WAIT_PHONE_NUMBER: self.__set_authentication_phone_number_or_check_bot_token,
-        API.Types.AUTHORIZATION_STATE_WAIT_CODE: self.__check_authentication_code,
-        API.Types.AUTHORIZATION_STATE_WAIT_REGISTRATION: self.__register_user,
-        API.Types.AUTHORIZATION_STATE_WAIT_PASSWORD: self.__check_authentication_password,
-        API.Types.AUTHORIZATION_STATE_READY: self.__auth_completed,
-        API.Types.AUTHORIZATION_STATE_LOGGING_OUT: self.__auth_logging_out,
-        API.Types.AUTHORIZATION_STATE_CLOSING: self.__auth_closing,
-        API.Types.AUTHORIZATION_STATE_CLOSED: self.__auth_closed,
-    }
-
     def __init__(self, **kwargs):
+
+        self.__auth_actions = {
+            None: self.__auth_start,
+            API.Types.AUTHORIZATION_STATE_WAIT_TDLIB_PARAMETERS: self.__set_tdlib_parameters,
+            API.Types.AUTHORIZATION_STATE_WAIT_ENCRYPTION_KEY: self.__check_database_encryption_key,
+            API.Types.AUTHORIZATION_STATE_WAIT_PHONE_NUMBER: self.__set_authentication_phone_number_or_check_bot_token,
+            API.Types.AUTHORIZATION_STATE_WAIT_CODE: self.__check_authentication_code,
+            API.Types.AUTHORIZATION_STATE_WAIT_REGISTRATION: self.__register_user,
+            API.Types.AUTHORIZATION_STATE_WAIT_PASSWORD: self.__check_authentication_password,
+            API.Types.AUTHORIZATION_STATE_READY: self.__auth_completed,
+            API.Types.AUTHORIZATION_STATE_LOGGING_OUT: self.__auth_logging_out,
+            API.Types.AUTHORIZATION_STATE_CLOSING: self.__auth_closing,
+            API.Types.AUTHORIZATION_STATE_CLOSED: self.__auth_closed,
+        }
+
         auth_action = kwargs.pop('auth_action', {}) or {}
+        
         if isinstance(auth_action, dict):
             self.__auth_actions.update(auth_action)
 
