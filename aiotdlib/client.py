@@ -329,8 +329,9 @@ class Client:
     }
 
     def __init__(self, **kwargs):
-        auth_action = kwargs.pop('auth_action',) or {}
-        self.__auth_actions.update(auth_action)
+        auth_action = kwargs.pop('auth_action', {}) or {}
+        if isinstance(auth_action, dict):
+            self.__auth_actions.update(auth_action)
 
         self.settings = ClientSettings(**kwargs)
         self.logger = logging.getLogger(self.__class__.__name__)
