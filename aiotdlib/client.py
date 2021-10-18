@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import enum
 import hashlib
+import inspect
 import logging
 import os
 import sys
@@ -799,7 +800,10 @@ class Client:
                     next_action = self.__auth_actions.get(self.__current_authorization_state)
 
                     if bool(next_action):
-                        result = await next_action()
+                        if inspect.ismethod(next_action):
+                            result = await next_action()
+                        else:
+                            result = await next_action(self)
                     else:
                         self.logger.error(f'Unhandled authorization state: {self.__current_authorization_state}')
                         break
