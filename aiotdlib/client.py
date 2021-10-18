@@ -331,7 +331,7 @@ class Client:
         }
 
         auth_action = kwargs.pop('auth_action', {}) or {}
-        
+
         if isinstance(auth_action, dict):
             self.__auth_actions.update(auth_action)
 
@@ -796,7 +796,7 @@ class Client:
             while True:
                 try:
                     self.logger.debug('Current authorization state: %s', self.__current_authorization_state)
-                    next_action = sefl.__auth_actions.get(self.__current_authorization_state)
+                    next_action = self.__auth_actions.get(self.__current_authorization_state)
 
                     if bool(next_action):
                         result = await next_action()
