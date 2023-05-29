@@ -188,7 +188,7 @@ class InputMessageForwarded(InputMessageContent):
     :param in_game_share: True, if a game message is being shared from a launched game; applies only to game messages
     :type in_game_share: :class:`bool`
     
-    :param copy_options: Options to be used to copy content of the message without reference to the original sender; pass null to try to forward the message as usual
+    :param copy_options: Options to be used to copy content of the message without reference to the original sender; pass null to forward the message as usual
     :type copy_options: :class:`MessageCopyOptions`
     
     """
@@ -315,7 +315,7 @@ class InputMessagePhoto(InputMessageContent):
     """
     A photo message
     
-    :param photo: Photo to send
+    :param photo: Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20
     :type photo: :class:`InputFile`
     
     :param thumbnail: Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats
@@ -371,7 +371,7 @@ class InputMessagePoll(InputMessageContent):
     :param open_period: Amount of time the poll will be active after creation, in seconds; for bots only
     :type open_period: :class:`int`
     
-    :param close_date: Point in time (Unix timestamp) when the poll will be automatically closed; for bots only
+    :param close_date: Point in time (Unix timestamp) when the poll will automatically be closed; for bots only
     :type close_date: :class:`int`
     
     :param is_closed: True, if the poll needs to be sent already closed; for bots only
@@ -430,7 +430,7 @@ class InputMessageText(InputMessageContent):
     """
     A text message
     
-    :param text: Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
+    :param text: Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
     :type text: :class:`FormattedText`
     
     :param disable_web_page_preview: True, if rich web page previews for URLs in the message text must be disabled

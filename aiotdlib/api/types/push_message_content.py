@@ -170,7 +170,7 @@ class PushMessageContentChatDeleteMember(PushMessageContent):
 
 class PushMessageContentChatJoinByLink(PushMessageContent):
     """
-    A new member joined the chat by invite link
+    A new member joined the chat via an invite link
     
     """
 
@@ -179,6 +179,19 @@ class PushMessageContentChatJoinByLink(PushMessageContent):
     @staticmethod
     def read(q: dict) -> PushMessageContentChatJoinByLink:
         return PushMessageContentChatJoinByLink.construct(**q)
+
+
+class PushMessageContentChatJoinByRequest(PushMessageContent):
+    """
+    A new member was accepted to the chat by an administrator
+    
+    """
+
+    ID: str = Field("pushMessageContentChatJoinByRequest", alias="@type")
+
+    @staticmethod
+    def read(q: dict) -> PushMessageContentChatJoinByRequest:
+        return PushMessageContentChatJoinByRequest.construct(**q)
 
 
 class PushMessageContentChatSetTheme(PushMessageContent):
@@ -460,6 +473,23 @@ class PushMessageContentPoll(PushMessageContent):
     @staticmethod
     def read(q: dict) -> PushMessageContentPoll:
         return PushMessageContentPoll.construct(**q)
+
+
+class PushMessageContentRecurringPayment(PushMessageContent):
+    """
+    A new recurrent payment was made by the current user
+    
+    :param amount: The paid amount
+    :type amount: :class:`str`
+    
+    """
+
+    ID: str = Field("pushMessageContentRecurringPayment", alias="@type")
+    amount: str
+
+    @staticmethod
+    def read(q: dict) -> PushMessageContentRecurringPayment:
+        return PushMessageContentRecurringPayment.construct(**q)
 
 
 class PushMessageContentScreenshotTaken(PushMessageContent):

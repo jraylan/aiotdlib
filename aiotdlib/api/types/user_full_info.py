@@ -9,8 +9,9 @@ import typing
 
 from pydantic import Field
 
-from .bot_command import BotCommand
+from .bot_info import BotInfo
 from .chat_photo import ChatPhoto
+from .formatted_text import FormattedText
 from ..base_object import BaseObject
 
 
@@ -33,23 +34,20 @@ class UserFullInfo(BaseObject):
     :param has_private_calls: True, if the user can't be called due to their privacy settings
     :type has_private_calls: :class:`bool`
     
+    :param has_private_forwards: True, if the user can't be linked in forwarded messages due to their privacy settings
+    :type has_private_forwards: :class:`bool`
+    
     :param need_phone_number_privacy_exception: True, if the current user needs to explicitly allow to share their phone number with the user when the method addContact is used
     :type need_phone_number_privacy_exception: :class:`bool`
     
-    :param bio: A short user bio
-    :type bio: :class:`str`
-    
-    :param share_text: For bots, the text that is shown on the bot's profile page and is sent together with the link when users share the bot
-    :type share_text: :class:`str`
-    
-    :param param_description: For bots, the text shown in the chat with the bot if the chat is empty
-    :type param_description: :class:`str`
+    :param bio: A short user bio; may be null for bots, defaults to None
+    :type bio: :class:`FormattedText`, optional
     
     :param group_in_common_count: Number of group chats where both the other user and the current user are a member; 0 for the current user
     :type group_in_common_count: :class:`int`
     
-    :param commands: For bots, list of the bot commands
-    :type commands: :class:`list[BotCommand]`
+    :param bot_info: For bots, information about the bot; may be null, defaults to None
+    :type bot_info: :class:`BotInfo`, optional
     
     """
 
@@ -59,12 +57,11 @@ class UserFullInfo(BaseObject):
     can_be_called: bool
     supports_video_calls: bool
     has_private_calls: bool
+    has_private_forwards: bool
     need_phone_number_privacy_exception: bool
-    bio: str
-    share_text: str
-    param_description: str
+    bio: typing.Optional[FormattedText] = None
     group_in_common_count: int
-    commands: list[BotCommand]
+    bot_info: typing.Optional[BotInfo] = None
 
     @staticmethod
     def read(q: dict) -> UserFullInfo:

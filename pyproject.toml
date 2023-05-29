@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aiotdlib"
-version = "0.12.3"
+version = "0.19.2"
 description = "Python asyncio Telegram client based on TDLib"
 authors = ["pylakey <pylakey@protonmail.com>"]
 license = "MIT"
@@ -18,19 +18,21 @@ include = [
 classifiers = [
     "Framework :: AsyncIO",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: POSIX :: BSD :: FreeBSD",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
 ]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pydantic = "^1.8.2"
+pydantic = "^1.9.1"
 sortedcontainers = "^2.4.0"
-ujson = "^4.2.0"
+ujson = "^5.4.0"
 
 [tool.poetry.dev-dependencies]
-Jinja2 = "^3.0.1"
+Jinja2 = "^3.1.2"
 
 [tool.poetry.scripts]
 aiotdlib_generator = "aiotdlib_generator.__main__:main"

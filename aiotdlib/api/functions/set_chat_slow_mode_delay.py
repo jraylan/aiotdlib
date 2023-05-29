@@ -17,7 +17,7 @@ class SetChatSlowModeDelay(BaseObject):
     :param chat_id: Chat identifier
     :type chat_id: :class:`int`
     
-    :param slow_mode_delay: New slow mode delay for the chat; must be one of 0, 10, 30, 60, 300, 900, 3600
+    :param slow_mode_delay: New slow mode delay for the chat, in seconds; must be one of 0, 10, 30, 60, 300, 900, 3600
     :type slow_mode_delay: :class:`int`
     
     """

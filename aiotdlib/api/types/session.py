@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
+from .session_type import SessionType
 from ..base_object import BaseObject
 
 
@@ -22,6 +23,15 @@ class Session(BaseObject):
     
     :param is_password_pending: True, if a password is needed to complete authorization of the session
     :type is_password_pending: :class:`bool`
+    
+    :param can_accept_secret_chats: True, if incoming secret chats can be accepted by the session
+    :type can_accept_secret_chats: :class:`bool`
+    
+    :param can_accept_calls: True, if incoming calls can be accepted by the session
+    :type can_accept_calls: :class:`bool`
+    
+    :param type_: Session type based on the system and application version, which can be used to display a corresponding icon
+    :type type_: :class:`SessionType`
     
     :param api_id: Telegram API identifier, as provided by the application
     :type api_id: :class:`int`
@@ -65,6 +75,9 @@ class Session(BaseObject):
     id: int
     is_current: bool
     is_password_pending: bool
+    can_accept_secret_chats: bool
+    can_accept_calls: bool
+    type_: SessionType = Field(..., alias='type')
     api_id: int
     application_name: str
     application_version: str

@@ -15,12 +15,12 @@ from ..types import ChatReportReason
 
 class ReportChat(BaseObject):
     """
-    Reports a chat to the Telegram moderators. A chat can be reported only from the chat action bar, or if this is a private chat with a bot, a private chat with a user sharing their location, a supergroup, or a channel, since other chats can't be checked by moderators
+    Reports a chat to the Telegram moderators. A chat can be reported only from the chat action bar, or if chat.can_be_reported
     
     :param chat_id: Chat identifier
     :type chat_id: :class:`int`
     
-    :param message_ids: Identifiers of reported messages, if any
+    :param message_ids: Identifiers of reported messages; may be empty to report the whole chat
     :type message_ids: :class:`list[int]`
     
     :param reason: The reason for reporting the chat

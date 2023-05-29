@@ -1,7 +1,9 @@
-__version__ = "0.12.2"
+__version__ = "0.19.2"
 
 from .client import (
     Client,
+    ClientOptions,
+    ClientParseMode,
     ClientProxySettings,
     ClientProxyType,
 )
@@ -54,6 +56,8 @@ __all__ = [
     BaseObjectFilter,
     BotCommandFilter,
     Client,
+    ClientOptions,
+    ClientParseMode,
     ClientProxySettings,
     ClientProxyType,
     ContactFilter,

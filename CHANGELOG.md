@@ -1,5 +1,134 @@
 # aiotdlib CHANGELOG
 
+### 0.19.1 - Hotfix
+
+#### Fixed
+
+* Fixed #31
+
+### 0.19.0 - TDLib 1.8.4
+
+#### Breaking
+
+* Most of `Client` class methods renamed to match python protected members convention
+
+#### Fixed
+
+* Fixed #17
+
+* Fixed #25 by removing wrong update handler
+
+#### Added
+
+* Added reactions related updates handlers in `ClientCache`
+
+* Added missing params in methods docs
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/6d485aa0b672ca4b5eccf05d6e5538c6988f12ef) (1.8.4 from now)
+
+* API types and functions regenerated
+
+* Upgraded dependencies
+
+### 0.18.0 - TDLib 1.8.3
+
+> This update may contain some breaking API changes!
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/f295ef3a0d3545970bfd658c3443496be3d28397) (1.8.3 from now)
+
+* API types and functions regenerated
+
+* Prebuilt TDLib binary for linux arm64 is not more provided, but you can build them yourself and use with aiotdlib
+
+> Prebuilt binaries for other systems and platforms will not be provided as well in future aiotdlib releases
+
+### 0.17.0 - TDLib 1.8.1
+
+> This update may contain some breaking API changes!
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/1e1ab5d1b0e4811e6d9e1584a82da08448d0cada) (1.8.1 from now)
+
+* API types and functions regenerated
+
+
+### 0.16.0 - TDLib 1.8.0
+
+> This update may contain some breaking API changes!
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/fa8feefed70d64271945e9d5fd010b957d93c8cd) (1.8.0 from now)
+
+* API types and functions regenerated
+
+### 0.15.1
+
+#### Updated
+
+* Fixed options setup (#8)
+
+* Removed ignore_sensitive_content_restrictions from available options as it is not editable by user
+
+* Fixed import typo (#9)
+
+### 0.15.0 - TDLib 1.7.11
+
+> This update contains some breaking API changes!
+
+#### Added
+
+* Added ability pass TDLib options as `Client` constructor parameter
+
+* `Client.get_my_id` method to retrieve currently connected user ID
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/218de37c3ada07b5acf793eb5638f5e476526eb2) (1.7.11 from now)
+
+* API types and functions regenerated
+
+* Improved chats info caching
+
+### 0.14.0 - TDLib 1.7.10
+
+> This update contains some breaking API changes!
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/6bd7e04875f0a323fc316d5be73358330134c9c8) (1.7.10 from now)
+
+* API types and functions regenerated
+
+### 0.13.2 - Bugfix
+
+#### Updated
+
+* Fixed small bug with settings validation 
+
+* Slightly reformatted Client constructor for better usability
+
+### 0.13.1 - Bugfix
+
+#### Updated
+
+* Fixed [#6](https://github.com/pylakey/aiotdlib/issues/6) 
+
+> This bug was related to [this](https://github.com/tdlib/td/commit/c69293e1ccc6c36f3134475a1bdb821db6d07ce0) TDLib's commit
+
+### 0.13.0 - TDLib 1.7.9
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/eb346f5573040803d4424049dd2ba8aaa039fa56) (1.7.9 from now)
+
+* API types and functions regenerated
+
 ### 0.12.2
 
 #### Updated

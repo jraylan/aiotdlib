@@ -81,9 +81,9 @@ class InlineKeyboardButtonTypeCallbackWithPassword(InlineKeyboardButtonType):
 
 class InlineKeyboardButtonTypeLoginUrl(InlineKeyboardButtonType):
     """
-    A button that opens a specified URL and automatically authorize the current user if allowed to do so
+    A button that opens a specified URL and automatically authorize the current user by calling getLoginUrlInfo
     
-    :param url: An HTTP URL to open
+    :param url: An HTTP URL to pass to getLoginUrlInfo
     :type url: :class:`str`
     
     :param id: Unique button identifier
@@ -140,3 +140,37 @@ class InlineKeyboardButtonTypeUrl(InlineKeyboardButtonType):
     @staticmethod
     def read(q: dict) -> InlineKeyboardButtonTypeUrl:
         return InlineKeyboardButtonTypeUrl.construct(**q)
+
+
+class InlineKeyboardButtonTypeUser(InlineKeyboardButtonType):
+    """
+    A button with a user reference to be handled in the same way as textEntityTypeMentionName entities
+    
+    :param user_id: User identifier
+    :type user_id: :class:`int`
+    
+    """
+
+    ID: str = Field("inlineKeyboardButtonTypeUser", alias="@type")
+    user_id: int
+
+    @staticmethod
+    def read(q: dict) -> InlineKeyboardButtonTypeUser:
+        return InlineKeyboardButtonTypeUser.construct(**q)
+
+
+class InlineKeyboardButtonTypeWebApp(InlineKeyboardButtonType):
+    """
+    A button that opens a Web App by calling openWebApp
+    
+    :param url: An HTTP URL to pass to openWebApp
+    :type url: :class:`str`
+    
+    """
+
+    ID: str = Field("inlineKeyboardButtonTypeWebApp", alias="@type")
+    url: str
+
+    @staticmethod
+    def read(q: dict) -> InlineKeyboardButtonTypeWebApp:
+        return InlineKeyboardButtonTypeWebApp.construct(**q)

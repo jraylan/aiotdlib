@@ -18,7 +18,7 @@ class JoinGroupCall(BaseObject):
     :param group_call_id: Group call identifier
     :type group_call_id: :class:`int`
     
-    :param participant_id: Identifier of a group call participant, which will be used to join the call; pass null to join as self; voice chats only
+    :param participant_id: Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
     :type participant_id: :class:`MessageSender`
     
     :param audio_source_id: Caller audio channel synchronization source identifier; received from tgcalls
@@ -27,10 +27,10 @@ class JoinGroupCall(BaseObject):
     :param payload: Group call join payload; received from tgcalls
     :type payload: :class:`str`
     
-    :param is_muted: True, if the user's microphone is muted
+    :param is_muted: Pass true to join the call with muted microphone
     :type is_muted: :class:`bool`
     
-    :param is_my_video_enabled: True, if the user's video is enabled
+    :param is_my_video_enabled: Pass true if the user's video is enabled
     :type is_my_video_enabled: :class:`bool`
     
     :param invite_hash: If non-empty, invite hash to be used to join the group call without being muted by administrators

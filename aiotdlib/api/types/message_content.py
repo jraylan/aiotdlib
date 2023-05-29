@@ -9,6 +9,7 @@ import typing
 
 from pydantic import Field
 
+from .animated_emoji import AnimatedEmoji
 from .animation import Animation
 from .audio import Audio
 from .call_discard_reason import CallDiscardReason
@@ -42,6 +43,27 @@ class MessageContent(BaseObject):
     """
 
     ID: str = Field("messageContent", alias="@type")
+
+
+class MessageAnimatedEmoji(MessageContent):
+    """
+    A message with an animated emoji
+    
+    :param animated_emoji: The animated emoji
+    :type animated_emoji: :class:`AnimatedEmoji`
+    
+    :param emoji: The corresponding emoji
+    :type emoji: :class:`str`
+    
+    """
+
+    ID: str = Field("messageAnimatedEmoji", alias="@type")
+    animated_emoji: AnimatedEmoji
+    emoji: str
+
+    @staticmethod
+    def read(q: dict) -> MessageAnimatedEmoji:
+        return MessageAnimatedEmoji.construct(**q)
 
 
 class MessageAnimation(MessageContent):
@@ -219,7 +241,7 @@ class MessageChatDeletePhoto(MessageContent):
 
 class MessageChatJoinByLink(MessageContent):
     """
-    A new member joined the chat by invite link
+    A new member joined the chat via an invite link
     
     """
 
@@ -228,6 +250,19 @@ class MessageChatJoinByLink(MessageContent):
     @staticmethod
     def read(q: dict) -> MessageChatJoinByLink:
         return MessageChatJoinByLink.construct(**q)
+
+
+class MessageChatJoinByRequest(MessageContent):
+    """
+    A new member was accepted to the chat by an administrator
+    
+    """
+
+    ID: str = Field("messageChatJoinByRequest", alias="@type")
+
+    @staticmethod
+    def read(q: dict) -> MessageChatJoinByRequest:
+        return MessageChatJoinByRequest.construct(**q)
 
 
 class MessageChatSetTheme(MessageContent):
@@ -251,7 +286,7 @@ class MessageChatSetTtl(MessageContent):
     """
     The TTL (Time To Live) setting for messages in the chat has been changed
     
-    :param ttl: New message TTL setting
+    :param ttl: New message TTL
     :type ttl: :class:`int`
     
     """
@@ -471,11 +506,11 @@ class MessageGameScore(MessageContent):
         return MessageGameScore.construct(**q)
 
 
-class MessageInviteVoiceChatParticipants(MessageContent):
+class MessageInviteVideoChatParticipants(MessageContent):
     """
-    A message with information about an invite to a voice chat
+    A message with information about an invite to a video chat
     
-    :param group_call_id: Identifier of the voice chat. The voice chat can be received through the method getGroupCall
+    :param group_call_id: Identifier of the video chat. The video chat can be received through the method getGroupCall
     :type group_call_id: :class:`int`
     
     :param user_ids: Invited user identifiers
@@ -483,13 +518,13 @@ class MessageInviteVoiceChatParticipants(MessageContent):
     
     """
 
-    ID: str = Field("messageInviteVoiceChatParticipants", alias="@type")
+    ID: str = Field("messageInviteVideoChatParticipants", alias="@type")
     group_call_id: int
     user_ids: list[int]
 
     @staticmethod
-    def read(q: dict) -> MessageInviteVoiceChatParticipants:
-        return MessageInviteVoiceChatParticipants.construct(**q)
+    def read(q: dict) -> MessageInviteVideoChatParticipants:
+        return MessageInviteVideoChatParticipants.construct(**q)
 
 
 class MessageInvoice(MessageContent):
@@ -500,7 +535,7 @@ class MessageInvoice(MessageContent):
     :type title: :class:`str`
     
     :param param_description: Product description
-    :type param_description: :class:`str`
+    :type param_description: :class:`FormattedText`
     
     :param photo: Product photo; may be null, defaults to None
     :type photo: :class:`Photo`, optional
@@ -527,7 +562,7 @@ class MessageInvoice(MessageContent):
 
     ID: str = Field("messageInvoice", alias="@type")
     title: str
-    param_description: str
+    param_description: FormattedText
     photo: typing.Optional[Photo] = None
     currency: str
     total_amount: int
@@ -597,7 +632,7 @@ class MessagePassportDataReceived(MessageContent):
 
 class MessagePassportDataSent(MessageContent):
     """
-    Telegram Passport data has been sent
+    Telegram Passport data has been sent to a bot
     
     :param types: List of Telegram Passport element types sent
     :type types: :class:`list[PassportElementType]`
@@ -619,7 +654,7 @@ class MessagePaymentSuccessful(MessageContent):
     :param invoice_chat_id: Identifier of the chat, containing the corresponding invoice message; 0 if unknown
     :type invoice_chat_id: :class:`int`
     
-    :param invoice_message_id: Identifier of the message with the corresponding invoice; can be an identifier of a deleted message
+    :param invoice_message_id: Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message
     :type invoice_message_id: :class:`int`
     
     :param currency: Currency for the price of the product
@@ -628,6 +663,15 @@ class MessagePaymentSuccessful(MessageContent):
     :param total_amount: Total price for the product, in the smallest units of the currency
     :type total_amount: :class:`int`
     
+    :param is_recurring: True, if this is a recurring payment
+    :type is_recurring: :class:`bool`
+    
+    :param is_first_recurring: True, if this is the first recurring payment
+    :type is_first_recurring: :class:`bool`
+    
+    :param invoice_name: Name of the invoice; may be empty if unknown
+    :type invoice_name: :class:`str`
+    
     """
 
     ID: str = Field("messagePaymentSuccessful", alias="@type")
@@ -635,6 +679,9 @@ class MessagePaymentSuccessful(MessageContent):
     invoice_message_id: int
     currency: str
     total_amount: int
+    is_recurring: bool
+    is_first_recurring: bool
+    invoice_name: str
 
     @staticmethod
     def read(q: dict) -> MessagePaymentSuccessful:
@@ -650,6 +697,12 @@ class MessagePaymentSuccessfulBot(MessageContent):
     
     :param total_amount: Total price for the product, in the smallest units of the currency
     :type total_amount: :class:`int`
+    
+    :param is_recurring: True, if this is a recurring payment
+    :type is_recurring: :class:`bool`
+    
+    :param is_first_recurring: True, if this is the first recurring payment
+    :type is_first_recurring: :class:`bool`
     
     :param invoice_payload: Invoice payload
     :type invoice_payload: :class:`str`
@@ -671,6 +724,8 @@ class MessagePaymentSuccessfulBot(MessageContent):
     ID: str = Field("messagePaymentSuccessfulBot", alias="@type")
     currency: str
     total_amount: int
+    is_recurring: bool
+    is_first_recurring: bool
     invoice_payload: str
     shipping_option_id: str
     order_info: typing.Optional[OrderInfo] = None
@@ -745,11 +800,11 @@ class MessageProximityAlertTriggered(MessageContent):
     """
     A user in the chat came within proximity alert range
     
-    :param traveler: The user or chat, which triggered the proximity alert
-    :type traveler: :class:`MessageSender`
+    :param traveler_id: The identifier of a user or chat that triggered the proximity alert
+    :type traveler_id: :class:`MessageSender`
     
-    :param watcher: The user or chat, which subscribed for the proximity alert
-    :type watcher: :class:`MessageSender`
+    :param watcher_id: The identifier of a user or chat that subscribed for the proximity alert
+    :type watcher_id: :class:`MessageSender`
     
     :param distance: The distance between the users
     :type distance: :class:`int`
@@ -757,8 +812,8 @@ class MessageProximityAlertTriggered(MessageContent):
     """
 
     ID: str = Field("messageProximityAlertTriggered", alias="@type")
-    traveler: MessageSender
-    watcher: MessageSender
+    traveler_id: MessageSender
+    watcher_id: MessageSender
     distance: int
 
     @staticmethod
@@ -786,10 +841,14 @@ class MessageSticker(MessageContent):
     :param sticker: The sticker description
     :type sticker: :class:`Sticker`
     
+    :param is_premium: True, if premium animation of the sticker must be played
+    :type is_premium: :class:`bool`
+    
     """
 
     ID: str = Field("messageSticker", alias="@type")
     sticker: Sticker
+    is_premium: bool
 
     @staticmethod
     def read(q: dict) -> MessageSticker:
@@ -889,6 +948,61 @@ class MessageVideo(MessageContent):
         return MessageVideo.construct(**q)
 
 
+class MessageVideoChatEnded(MessageContent):
+    """
+    A message with information about an ended video chat
+    
+    :param duration: Call duration, in seconds
+    :type duration: :class:`int`
+    
+    """
+
+    ID: str = Field("messageVideoChatEnded", alias="@type")
+    duration: int
+
+    @staticmethod
+    def read(q: dict) -> MessageVideoChatEnded:
+        return MessageVideoChatEnded.construct(**q)
+
+
+class MessageVideoChatScheduled(MessageContent):
+    """
+    A new video chat was scheduled
+    
+    :param group_call_id: Identifier of the video chat. The video chat can be received through the method getGroupCall
+    :type group_call_id: :class:`int`
+    
+    :param start_date: Point in time (Unix timestamp) when the group call is supposed to be started by an administrator
+    :type start_date: :class:`int`
+    
+    """
+
+    ID: str = Field("messageVideoChatScheduled", alias="@type")
+    group_call_id: int
+    start_date: int
+
+    @staticmethod
+    def read(q: dict) -> MessageVideoChatScheduled:
+        return MessageVideoChatScheduled.construct(**q)
+
+
+class MessageVideoChatStarted(MessageContent):
+    """
+    A newly created video chat
+    
+    :param group_call_id: Identifier of the video chat. The video chat can be received through the method getGroupCall
+    :type group_call_id: :class:`int`
+    
+    """
+
+    ID: str = Field("messageVideoChatStarted", alias="@type")
+    group_call_id: int
+
+    @staticmethod
+    def read(q: dict) -> MessageVideoChatStarted:
+        return MessageVideoChatStarted.construct(**q)
+
+
 class MessageVideoNote(MessageContent):
     """
     A video note message
@@ -914,61 +1028,6 @@ class MessageVideoNote(MessageContent):
         return MessageVideoNote.construct(**q)
 
 
-class MessageVoiceChatEnded(MessageContent):
-    """
-    A message with information about an ended voice chat
-    
-    :param duration: Call duration, in seconds
-    :type duration: :class:`int`
-    
-    """
-
-    ID: str = Field("messageVoiceChatEnded", alias="@type")
-    duration: int
-
-    @staticmethod
-    def read(q: dict) -> MessageVoiceChatEnded:
-        return MessageVoiceChatEnded.construct(**q)
-
-
-class MessageVoiceChatScheduled(MessageContent):
-    """
-    A new voice chat was scheduled
-    
-    :param group_call_id: Identifier of the voice chat. The voice chat can be received through the method getGroupCall
-    :type group_call_id: :class:`int`
-    
-    :param start_date: Point in time (Unix timestamp) when the group call is supposed to be started by an administrator
-    :type start_date: :class:`int`
-    
-    """
-
-    ID: str = Field("messageVoiceChatScheduled", alias="@type")
-    group_call_id: int
-    start_date: int
-
-    @staticmethod
-    def read(q: dict) -> MessageVoiceChatScheduled:
-        return MessageVoiceChatScheduled.construct(**q)
-
-
-class MessageVoiceChatStarted(MessageContent):
-    """
-    A newly created voice chat
-    
-    :param group_call_id: Identifier of the voice chat. The voice chat can be received through the method getGroupCall
-    :type group_call_id: :class:`int`
-    
-    """
-
-    ID: str = Field("messageVoiceChatStarted", alias="@type")
-    group_call_id: int
-
-    @staticmethod
-    def read(q: dict) -> MessageVoiceChatStarted:
-        return MessageVoiceChatStarted.construct(**q)
-
-
 class MessageVoiceNote(MessageContent):
     """
     A voice note message
@@ -992,6 +1051,44 @@ class MessageVoiceNote(MessageContent):
     @staticmethod
     def read(q: dict) -> MessageVoiceNote:
         return MessageVoiceNote.construct(**q)
+
+
+class MessageWebAppDataReceived(MessageContent):
+    """
+    Data from a Web App has been received; for bots only
+    
+    :param button_text: Text of the keyboardButtonTypeWebApp button, which opened the Web App
+    :type button_text: :class:`str`
+    
+    :param data: Received data
+    :type data: :class:`str`
+    
+    """
+
+    ID: str = Field("messageWebAppDataReceived", alias="@type")
+    button_text: str
+    data: str
+
+    @staticmethod
+    def read(q: dict) -> MessageWebAppDataReceived:
+        return MessageWebAppDataReceived.construct(**q)
+
+
+class MessageWebAppDataSent(MessageContent):
+    """
+    Data from a Web App has been sent to a bot
+    
+    :param button_text: Text of the keyboardButtonTypeWebApp button, which opened the Web App
+    :type button_text: :class:`str`
+    
+    """
+
+    ID: str = Field("messageWebAppDataSent", alias="@type")
+    button_text: str
+
+    @staticmethod
+    def read(q: dict) -> MessageWebAppDataSent:
+        return MessageWebAppDataSent.construct(**q)
 
 
 class MessageWebsiteConnected(MessageContent):

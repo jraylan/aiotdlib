@@ -18,7 +18,7 @@ class AcceptCall(BaseObject):
     :param call_id: Call identifier
     :type call_id: :class:`int`
     
-    :param protocol: Description of the call protocols supported by the application
+    :param protocol: The call protocols supported by the application
     :type protocol: :class:`CallProtocol`
     
     """

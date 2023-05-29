@@ -27,7 +27,7 @@ class Supergroup(BaseObject):
     :param status: Status of the current user in the supergroup or channel; custom title will be always empty
     :type status: :class:`ChatMemberStatus`
     
-    :param member_count: Number of members in the supergroup or channel; 0 if unknown. Currently it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, or getUserPrivacySettingRules
+    :param member_count: Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, or getUserPrivacySettingRules
     :type member_count: :class:`int`
     
     :param has_linked_chat: True, if the channel has a discussion group, or the supergroup is the designated discussion group for a channel
@@ -39,13 +39,19 @@ class Supergroup(BaseObject):
     :param sign_messages: True, if messages sent to the channel need to contain information about the sender. This field is only applicable to channels
     :type sign_messages: :class:`bool`
     
+    :param join_to_send_messages: True, if users need to join the supergroup before they can send messages. Always true for channels and non-discussion supergroups
+    :type join_to_send_messages: :class:`bool`
+    
+    :param join_by_request: True, if all users directly joining the supergroup need to be approved by supergroup administrators. Always false for channels and supergroups without username, location, or a linked chat
+    :type join_by_request: :class:`bool`
+    
     :param is_slow_mode_enabled: True, if the slow mode is enabled in the supergroup
     :type is_slow_mode_enabled: :class:`bool`
     
     :param is_channel: True, if the supergroup is a channel
     :type is_channel: :class:`bool`
     
-    :param is_broadcast_group: True, if the supergroup is a broadcast group, i.e. only administrators can send messages and there is no limit on number of members
+    :param is_broadcast_group: True, if the supergroup is a broadcast group, i.e. only administrators can send messages and there is no limit on the number of members
     :type is_broadcast_group: :class:`bool`
     
     :param is_verified: True, if the supergroup or channel is verified
@@ -71,6 +77,8 @@ class Supergroup(BaseObject):
     has_linked_chat: bool
     has_location: bool
     sign_messages: bool
+    join_to_send_messages: bool
+    join_by_request: bool
     is_slow_mode_enabled: bool
     is_channel: bool
     is_broadcast_group: bool

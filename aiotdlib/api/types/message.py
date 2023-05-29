@@ -16,6 +16,7 @@ from .message_scheduling_state import MessageSchedulingState
 from .message_sender import MessageSender
 from .message_sending_state import MessageSendingState
 from .reply_markup import ReplyMarkup
+from .unread_reaction import UnreadReaction
 from ..base_object import BaseObject
 
 
@@ -26,16 +27,16 @@ class Message(BaseObject):
     :param id: Message identifier; unique for the chat to which the message belongs
     :type id: :class:`int`
     
-    :param sender: The sender of the message
-    :type sender: :class:`MessageSender`
+    :param sender_id: Identifier of the sender of the message
+    :type sender_id: :class:`MessageSender`
     
     :param chat_id: Chat identifier
     :type chat_id: :class:`int`
     
-    :param sending_state: Information about the sending state of the message; may be null, defaults to None
+    :param sending_state: The sending state of the message; may be null, defaults to None
     :type sending_state: :class:`MessageSendingState`, optional
     
-    :param scheduling_state: Information about the scheduling state of the message; may be null, defaults to None
+    :param scheduling_state: The scheduling state of the message; may be null, defaults to None
     :type scheduling_state: :class:`MessageSchedulingState`, optional
     
     :param is_outgoing: True, if the message is outgoing
@@ -50,22 +51,28 @@ class Message(BaseObject):
     :param can_be_forwarded: True, if the message can be forwarded
     :type can_be_forwarded: :class:`bool`
     
+    :param can_be_saved: True, if content of the message can be saved locally or copied
+    :type can_be_saved: :class:`bool`
+    
     :param can_be_deleted_only_for_self: True, if the message can be deleted only for the current user while other users will continue to see it
     :type can_be_deleted_only_for_self: :class:`bool`
     
     :param can_be_deleted_for_all_users: True, if the message can be deleted for all users
     :type can_be_deleted_for_all_users: :class:`bool`
     
-    :param can_get_statistics: True, if the message statistics are available
+    :param can_get_added_reactions: True, if the list of added reactions is available through getMessageAddedReactions
+    :type can_get_added_reactions: :class:`bool`
+    
+    :param can_get_statistics: True, if the message statistics are available through getMessageStatistics
     :type can_get_statistics: :class:`bool`
     
-    :param can_get_message_thread: True, if the message thread info is available
+    :param can_get_message_thread: True, if information about the message thread is available through getMessageThread
     :type can_get_message_thread: :class:`bool`
     
     :param can_get_viewers: True, if chat members already viewed the message can be received through getMessageViewers
     :type can_get_viewers: :class:`bool`
     
-    :param can_get_media_timestamp_links: True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description
+    :param can_get_media_timestamp_links: True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink
     :type can_get_media_timestamp_links: :class:`bool`
     
     :param has_timestamped_media: True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
@@ -88,6 +95,9 @@ class Message(BaseObject):
     
     :param interaction_info: Information about interactions with the message; may be null, defaults to None
     :type interaction_info: :class:`MessageInteractionInfo`, optional
+    
+    :param unread_reactions: Information about unread reactions added to the message
+    :type unread_reactions: :class:`list[UnreadReaction]`
     
     :param reply_in_chat_id: If non-zero, the identifier of the chat to which the replied message belongs; Currently, only messages in the Replies chat can have different reply_in_chat_id and chat_id
     :type reply_in_chat_id: :class:`int`
@@ -126,7 +136,7 @@ class Message(BaseObject):
 
     ID: str = Field("message", alias="@type")
     id: int
-    sender: MessageSender
+    sender_id: MessageSender
     chat_id: int
     sending_state: typing.Optional[MessageSendingState] = None
     scheduling_state: typing.Optional[MessageSchedulingState] = None
@@ -134,8 +144,10 @@ class Message(BaseObject):
     is_pinned: bool
     can_be_edited: bool
     can_be_forwarded: bool
+    can_be_saved: bool
     can_be_deleted_only_for_self: bool
     can_be_deleted_for_all_users: bool
+    can_get_added_reactions: bool
     can_get_statistics: bool
     can_get_message_thread: bool
     can_get_viewers: bool
@@ -147,6 +159,7 @@ class Message(BaseObject):
     edit_date: int
     forward_info: typing.Optional[MessageForwardInfo] = None
     interaction_info: typing.Optional[MessageInteractionInfo] = None
+    unread_reactions: list[UnreadReaction]
     reply_in_chat_id: int
     reply_to_message_id: int
     message_thread_id: int
